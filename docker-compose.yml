@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  yellow_media_test_app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: yellow_media_test_app
+    tty: true
+    depends_on:
+      - yellow_media_db
+    environment:
+      DATABASE_URL: postgresql://devuser:devsecret@127.0.0.1:5432/yellow_media
+    working_dir: /var/www
+    volumes:
+      - ./lumen:/var/www
+
+  yellow_media_test_webserver:
+    image: nginx:stable
+    container_name: yellow_media_test_webserver
+    restart: always
+    ports:
+      - "8092:80"
+    depends_on:
+      - yellow_media_test_app
+    volumes:
+      - ./lumen:/var/www
+      - ./docker/app.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - yellow_media_test_app
+
+  yellow_media_db:
+    image: postgres:15.1
+    container_name: yellow_media_db
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: devsecret
+      POSTGRES_USER: devuser
+      POSTGRES_DB: yellow_media
+    ports:
+      - "54320:5432"
+
+volumes:
+  db_data:
