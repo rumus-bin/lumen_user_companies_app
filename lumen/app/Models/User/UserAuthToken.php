@@ -4,7 +4,13 @@ namespace App\Models\User;
 
 use App\Models\ProjectDataModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property string $authToken
+ * @property Carbon $createdAt
+ * @property Carbon $updatedAt
+ */
 class UserAuthToken extends ProjectDataModel
 {
     public const TABLE_NAME = 'user_auth_tokens';

@@ -11,6 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 
+/**
+ * @property UserAuthToken|null $authToken
+ * @property string $name
+ * @property string|null $surname
+ * @property string $email
+ */
 class User extends ProjectDataModel implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
