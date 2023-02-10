@@ -1,17 +1,33 @@
 <?php
 
-namespace app\Models\User;
+namespace App\Models\User;
 
+use App\Models\ProjectDataModel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends ProjectDataModel implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
+
+    public const TABLE_NAME = 'users';
+
+    public const NAME = 'name';
+    public const SURNAME = 'surname';
+    public const EMAIL = 'email';
+    public const PASSWORD = 'password';
+    public const CREATED_AT = 'created_at';
+    public const UPDATED_AT = 'updated_at';
+
+    public function getTableName(): string
+    {
+        return self::TABLE_NAME;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +35,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email',
+        self::NAME,
+        self::SURNAME,
+        self::EMAIL,
+    ];
+
+    protected $dates = [
+        self::CREATED_AT,
+        self::UPDATED_AT
     ];
 
     /**
@@ -28,6 +51,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $hidden = [
-        'password',
+        self::PASSWORD,
     ];
+
+    public function phones(): HasMany
+    {
+        return $this->hasMany(UserPhone::class, UserPhone::USER_ID);
+    }
+
+    public function authToken(): HasOne
+    {
+        return $this->hasOne(UserAuthToken::class);
+    }
 }
