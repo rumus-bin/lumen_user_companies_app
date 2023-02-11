@@ -29,3 +29,7 @@ $router->group(
         );
     }
 );
+$router->get('/auth_check', ['middleware' => 'auth', function (\Illuminate\Http\Request $request) {
+    return 'Auth here!';
+}]);
+
