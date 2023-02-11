@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Api\User\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\UserCreateRequest;
+use App\Http\Resources\Users\UnauthorizedJsonResource;
+use App\Http\Resources\Users\UserJsonResource;
 use App\Models\User\Services\AuthUserService;
+use App\Models\User\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Validation\ValidationException;
 
 class ApiUserAuthController extends Controller
@@ -17,10 +22,10 @@ class ApiUserAuthController extends Controller
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return JsonResource
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request): JsonResource
     {
         $this->validate($request, [
             'email' => 'required|string|email',
@@ -32,22 +37,16 @@ class ApiUserAuthController extends Controller
         );
 
         if (!$user) {
-            return response()->json([
-                'error' => 'Unauthorized',
-                'links' => [
-                    'register_link' => 'The register link should be here'
-                ]
-            ]);
+            return new UnauthorizedJsonResource(new User());
         }
 
-        return response()->json([
-            'access_token' => $user->authToken->authToken,
-            'token_type' => 'bearer',
-            'user' => [
-                'name' => $user->name,
-                'surname' => $user->surname,
-                'email' => $user->email
-            ],
-        ]);
+        return new UserJsonResource($user);
+    }
+
+    public function register(UserCreateRequest $request): UserJsonResource
+    {
+        $user = $this->authUserService->register($request->getDto());
+
+        return new UserJsonResource($user);
     }
 }

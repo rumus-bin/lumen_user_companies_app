@@ -4,6 +4,7 @@ namespace App\Models\User\Repositories;
 
 use App\Models\AbstractRepository;
 use App\Models\User\User;
+use App\Models\User\UserAuthToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,11 @@ use Illuminate\Support\Facades\Hash;
  */
 class UserRepository extends AbstractRepository
 {
+    public function __construct()
+    {
+        parent::__construct(User::class);
+    }
+
     public function findByCredentials(string $email, string $password): ?User
     {
         $qb = $this->createQueryBuilder();
@@ -32,5 +38,13 @@ class UserRepository extends AbstractRepository
             ->first();
 
         return $user;
+    }
+
+    public function saveAuthToken(User $user, UserAuthToken $authToken): UserAuthToken
+    {
+        /** @var UserAuthToken $authTokenModel */
+        $authTokenModel = $user->authToken()->save($authToken);
+
+        return $authTokenModel;
     }
 }

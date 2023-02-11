@@ -13,6 +13,7 @@ use Laravel\Lumen\Auth\Authorizable;
 
 /**
  * @property UserAuthToken|null $authToken
+ * @property int $id
  * @property string $name
  * @property string|null $surname
  * @property string $email
@@ -44,6 +45,7 @@ class User extends ProjectDataModel implements AuthenticatableContract, Authoriz
         self::NAME,
         self::SURNAME,
         self::EMAIL,
+        self::PASSWORD
     ];
 
     protected $dates = [

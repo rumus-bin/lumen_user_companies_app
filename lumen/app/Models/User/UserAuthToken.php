@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * @property string $authToken
+ * @property string $auth_token
  * @property Carbon $createdAt
  * @property Carbon $updatedAt
  */

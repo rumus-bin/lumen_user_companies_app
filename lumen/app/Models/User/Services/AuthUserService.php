@@ -2,18 +2,18 @@
 
 namespace App\Models\User\Services;
 
-use App\Models\User\Repositories\UserAuthTokenRepository;
+use App\Models\User\AuthUserDto;
 use App\Models\User\Repositories\UserRepository;
 use App\Models\User\User;
 use App\Models\User\UserAuthToken;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthUserService
 {
     public function __construct(
-        private UserRepository $userRepository,
-        private UserAuthTokenRepository$authTokenRepository
+        private readonly UserRepository $userRepository
     ) {
     }
 
@@ -28,9 +28,25 @@ class AuthUserService
         return $this->refreshToken($user);
     }
 
+    public function register(AuthUserDto $authUserDto): ?User
+    {
+        $user = new User(
+            [
+                User::NAME => $authUserDto->name,
+                User::SURNAME => $authUserDto->surname,
+                User::EMAIL => $authUserDto->email,
+                User::PASSWORD => Hash::make($authUserDto->password)
+            ]
+        );
+
+        $this->userRepository->store($user);
+
+        return $this->refreshToken($user);
+    }
+
     private function refreshToken(User $user): User
     {
-        $token = Str::random(256);
+        $token = Str::random(255);
         $authToken = $user->authToken;
 
         if ($authToken) {
@@ -42,8 +58,9 @@ class AuthUserService
                 ]
             );
         }
-        $authToken = $this->authTokenRepository->store($authToken);
 
-        return $user->authToken = $authToken;
+        $user->authToken = $this->userRepository->saveAuthToken($user, $authToken);
+
+        return $user;
     }
 }
