@@ -8,7 +8,8 @@ class AuthUserDto
         public string $name,
         public string $email,
         public string $password,
-        public ?string $surname = null
+        public ?string $surname = null,
+        public ?string $phoneNumber = null
     ) {
     }
 }

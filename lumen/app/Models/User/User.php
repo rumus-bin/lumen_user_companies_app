@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\PhoneNumber\PhoneNumber;
 use App\Models\ProjectDataModel;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -9,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Lumen\Auth\Authorizable;
 
 /**
@@ -19,6 +21,7 @@ use Laravel\Lumen\Auth\Authorizable;
  * @property string|null $password
  * @property string $email
  * @property  UserRestoreToken|null $restoreToken
+ * @property  PhoneNumber|null $phone
  */
 class User extends ProjectDataModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -64,9 +67,9 @@ class User extends ProjectDataModel implements AuthenticatableContract, Authoriz
         self::PASSWORD,
     ];
 
-    public function phones(): HasMany
+    public function phone(): MorphOne
     {
-        return $this->hasMany(UserPhone::class, UserPhone::USER_ID);
+        return $this->morphOne(PhoneNumber::class, 'phonable');
     }
 
     public function authToken(): HasOne

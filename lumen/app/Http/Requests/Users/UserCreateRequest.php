@@ -15,7 +15,8 @@ class UserCreateRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name' => 'string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
+            'phone' => 'string'
         ];
     }
 
@@ -39,7 +40,8 @@ class UserCreateRequest extends FormRequest
             $this->get('first_name'),
             $this->get('email'),
             $this->get('password'),
-            $this->get('last_name')
+            $this->get('last_name'),
+            $this->get('phone')
         );
     }
 }
