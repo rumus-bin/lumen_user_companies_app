@@ -16,7 +16,7 @@ $router->group(
                 'namespace' => 'Auth'
             ],
             static function () use($router) {
-                $router->post('/user/login', [
+                $router->post('/user/sign-in', [
                     'as' => 'user_login',
                     'uses' => 'ApiUserAuthController@login'
                 ]);

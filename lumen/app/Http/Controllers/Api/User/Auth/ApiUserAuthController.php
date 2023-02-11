@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserCreateRequest;
+use App\Http\Requests\Users\UserLoginRequest;
 use App\Http\Resources\Users\UnauthorizedJsonResource;
 use App\Http\Resources\Users\UserJsonResource;
 use App\Models\User\Services\AuthUserService;
@@ -21,16 +22,11 @@ class ApiUserAuthController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param UserLoginRequest $request
      * @return JsonResource
-     * @throws ValidationException
      */
-    public function login(Request $request): JsonResource
+    public function login(UserLoginRequest $request): JsonResource
     {
-        $this->validate($request, [
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8',
-        ]);
         $user = $this->authUserService->login(
             $request->get('email'),
             $request->get('password')

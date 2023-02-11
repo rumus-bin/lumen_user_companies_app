@@ -16,6 +16,7 @@ use Laravel\Lumen\Auth\Authorizable;
  * @property int $id
  * @property string $name
  * @property string|null $surname
+ * @property string|null $password
  * @property string $email
  */
 class User extends ProjectDataModel implements AuthenticatableContract, AuthorizableContract

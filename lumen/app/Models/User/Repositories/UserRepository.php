@@ -33,11 +33,14 @@ class UserRepository extends AbstractRepository
         $qb = $this->createQueryBuilder();
         /** @var User|null $user */
         $user = $qb->where(User::EMAIL, $email)
-            ->where(User::PASSWORD, Hash::make($password))
             ->with('authToken')
             ->first();
 
-        return $user;
+        if ($user && Hash::check($password, $user->password)) {
+            return $user;
+        }
+
+        return null;
     }
 
     public function saveAuthToken(User $user, UserAuthToken $authToken): UserAuthToken

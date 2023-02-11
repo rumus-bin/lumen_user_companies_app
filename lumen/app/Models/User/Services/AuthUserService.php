@@ -22,7 +22,7 @@ class AuthUserService
         $user = $this->userRepository->findByCredentials($email, $password);
 
         if (!$user) {
-            throw new UnauthorizedException('User not exists. Please check your credentials.');
+            return $user;
         }
 
         return $this->refreshToken($user);
@@ -50,7 +50,7 @@ class AuthUserService
         $authToken = $user->authToken;
 
         if ($authToken) {
-            $authToken->authToken = $token;
+            $authToken->auth_token = $token;
         } else {
             $authToken = new UserAuthToken(
                 [
