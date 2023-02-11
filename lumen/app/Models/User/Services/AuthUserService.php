@@ -3,6 +3,7 @@
 namespace App\Models\User\Services;
 
 use App\Mail\Users\Auth\RecoverPassword;
+use App\Models\PhoneNumber\PhoneNumber;
 use App\Models\User\AuthUserDto;
 use App\Models\User\Repositories\UseRestoreTokenRepository;
 use App\Models\User\Repositories\UserRepository;
@@ -46,7 +47,20 @@ class AuthUserService
 
         $this->userRepository->store($user);
 
+        if ($authUserDto->phoneNumber) {
+            $this->savePhoneNumber($user, $authUserDto->phoneNumber);
+        }
+
         return $this->refreshToken($user);
+    }
+
+    private function savePhoneNumber(User $user, string $phoneNumber): void
+    {
+        $phoneNumberModel = new PhoneNumber(
+            [PhoneNumber::PHONE_NUMBER => $phoneNumber]
+        );
+
+        $this->userRepository->savePhoneNumber($user, $phoneNumberModel);
     }
 
     private function refreshToken(User $user): User

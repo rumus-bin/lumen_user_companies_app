@@ -3,6 +3,7 @@
 namespace App\Models\User\Repositories;
 
 use App\Models\AbstractRepository;
+use App\Models\PhoneNumber\PhoneNumber;
 use App\Models\User\User;
 use App\Models\User\UserAuthToken;
 use App\Models\User\UserRestoreToken;
@@ -58,5 +59,13 @@ class UserRepository extends AbstractRepository
         $tokenModel = $user->restoreToken()->save($token);
 
         return $tokenModel;
+    }
+
+    public function savePhoneNumber(User $user, Model $phoneNumber): PhoneNumber
+    {
+        /** @var PhoneNumber $phone */
+        $phone = $user->phone()->save($phoneNumber);
+
+        return $phone;
     }
 }

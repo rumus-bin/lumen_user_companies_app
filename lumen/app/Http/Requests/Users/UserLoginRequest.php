@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Users;
 
 use App\Http\Requests\FormRequest;
-use App\Models\User\AuthUserDto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
