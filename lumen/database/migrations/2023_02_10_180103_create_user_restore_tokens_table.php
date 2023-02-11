@@ -19,6 +19,7 @@ class CreateUserRestoreTokensTable extends Migration
             $table->id();
             $table->string(UserRestoreToken::RESTORE_TOKEN);
             $table->unsignedBigInteger(UserRestoreToken::USER_ID);
+            $table->timestamps();
 
             $table->foreign(UserRestoreToken::USER_ID)
                 ->references(User::ID)

@@ -18,6 +18,7 @@ use Laravel\Lumen\Auth\Authorizable;
  * @property string|null $surname
  * @property string|null $password
  * @property string $email
+ * @property  UserRestoreToken|null $restoreToken
  */
 class User extends ProjectDataModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -71,5 +72,10 @@ class User extends ProjectDataModel implements AuthenticatableContract, Authoriz
     public function authToken(): HasOne
     {
         return $this->hasOne(UserAuthToken::class);
+    }
+
+    public function restoreToken(): HasOne
+    {
+        return $this->hasOne(UserRestoreToken::class);
     }
 }

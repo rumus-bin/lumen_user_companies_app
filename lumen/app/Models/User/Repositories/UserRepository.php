@@ -5,6 +5,7 @@ namespace App\Models\User\Repositories;
 use App\Models\AbstractRepository;
 use App\Models\User\User;
 use App\Models\User\UserAuthToken;
+use App\Models\User\UserRestoreToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -49,5 +50,13 @@ class UserRepository extends AbstractRepository
         $authTokenModel = $user->authToken()->save($authToken);
 
         return $authTokenModel;
+    }
+
+    public function saveRestoreToken(User $user, UserRestoreToken $token): UserRestoreToken
+    {
+        /** @var UserRestoreToken $tokenModel */
+        $tokenModel = $user->restoreToken()->save($token);
+
+        return $tokenModel;
     }
 }
