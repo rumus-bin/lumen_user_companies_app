@@ -27,6 +27,7 @@ $router->group(
                 $router->post(
                     '/companies',
                     [
+                        'middleware' => 'transactional',
                         'as' => 'users_add_company',
                         'uses' => 'ApiUserCompanyController@create'
                     ]
@@ -44,6 +45,7 @@ $router->group(
                 ]);
 
                 $router->post('/register', [
+                    'middleware' => 'transactional',
                     'as' => 'user_register',
                     'uses' => 'ApiUserAuthController@register'
                 ]);

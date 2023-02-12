@@ -78,6 +78,7 @@ $app->configure('app');
 
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
+     'transactional' => App\Http\Middleware\TransactionalMiddleware::class
  ]);
 
 /*

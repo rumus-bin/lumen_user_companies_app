@@ -13,7 +13,6 @@ use App\Models\User\UserRestoreToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Validation\ValidationException;
 
 class ApiUserAuthController extends Controller
 {
