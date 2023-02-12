@@ -61,6 +61,11 @@ fields: first_name [string], last_name [string], email [string], password [strin
 
 All POST requests require ~Bearer~ authentication helea with a token, which can be obtained when registering or logging in a user
 
+## Test data
+
+To create a test user with a company, you need to enter the docker container in the way described above and run the console command 
+
+    php artisan user_with_company:create
 
 ## Conclusion
 This test Lumen 9 app serves as a basic starting point for building a RESTful API for managing users and companies using Lumen 9. You can use this app as a reference or build upon it to create more complex applications.

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use app\Models\User\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
