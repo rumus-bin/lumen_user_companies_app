@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\Company\Company;
 use App\Models\PhoneNumber\PhoneNumber;
 use App\Models\ProjectDataModel;
 use Illuminate\Auth\Authenticatable;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Collection;
 use Laravel\Lumen\Auth\Authorizable;
 
 /**
@@ -22,6 +24,7 @@ use Laravel\Lumen\Auth\Authorizable;
  * @property string $email
  * @property  UserRestoreToken|null $restoreToken
  * @property  PhoneNumber|null $phone
+ * @property Collection $companies
  */
 class User extends ProjectDataModel implements AuthenticatableContract, AuthorizableContract
 {
@@ -80,5 +83,10 @@ class User extends ProjectDataModel implements AuthenticatableContract, Authoriz
     public function restoreToken(): HasOne
     {
         return $this->hasOne(UserRestoreToken::class);
+    }
+
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
     }
 }

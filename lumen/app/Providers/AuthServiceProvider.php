@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User\Repositories\UserAuthTokenRepository;
 use app\Models\User\User;
+use App\Models\User\UserAuthToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,8 +35,14 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->viaRequest('api', function (Request $request) {
             if ($request->bearerToken()) {
-//                return User::where('api_token', $request->bearerToken())->first();
-                return $request->bearerToken();
+                /** @var UserAuthTokenRepository $authRepository */
+                $authRepository = app(UserAuthTokenRepository::class);
+                $authTokenModel = $authRepository->findOneByField(
+                    UserAuthToken::AUTH_TOKEN,
+                    $request->bearerToken()
+                );
+
+                return $authTokenModel?->user;
             }
 
             throw new NotFoundHttpException();

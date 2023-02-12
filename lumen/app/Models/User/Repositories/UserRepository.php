@@ -3,6 +3,7 @@
 namespace App\Models\User\Repositories;
 
 use App\Models\AbstractRepository;
+use App\Models\Company\Company;
 use App\Models\PhoneNumber\PhoneNumber;
 use App\Models\User\User;
 use App\Models\User\UserAuthToken;
@@ -67,5 +68,13 @@ class UserRepository extends AbstractRepository
         $phone = $user->phone()->save($phoneNumber);
 
         return $phone;
+    }
+
+    public function saveCompany(User $user, Company $company): Company
+    {
+        /** @var Company $companyModel */
+        $companyModel = $user->companies()->save($company);
+
+        return $companyModel;
     }
 }

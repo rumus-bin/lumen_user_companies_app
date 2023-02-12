@@ -8,20 +8,42 @@ $router->get('/', function () use ($router) {
 
 $router->group(
     [
-        'namespace' => 'User'
+        'namespace' => 'User',
+        'prefix' => 'user'
     ],
-    static function () use($router) {
+    static function() use($router) {
+        $router->group(
+            [
+                'middleware' => 'auth'
+            ],
+            static function() use($router) {
+                $router->get(
+                    '/companies',
+                    [
+                        'as' => 'users_companies',
+                        'uses' => 'ApiUserCompanyController@index'
+                    ]
+                );
+                $router->post(
+                    '/companies',
+                    [
+                        'as' => 'users_add_company',
+                        'uses' => 'ApiUserCompanyController@create'
+                    ]
+                );
+            }
+        );
         $router->group(
             [
                 'namespace' => 'Auth'
             ],
-            static function () use($router) {
-                $router->post('/user/sign-in', [
+            static function() use($router) {
+                $router->post('/sign-in', [
                     'as' => 'user_login',
                     'uses' => 'ApiUserAuthController@login'
                 ]);
 
-                $router->post('/user/register', [
+                $router->post('/register', [
                     'as' => 'user_register',
                     'uses' => 'ApiUserAuthController@register'
                 ]);
@@ -29,7 +51,4 @@ $router->group(
         );
     }
 );
-$router->get('/auth_check', ['middleware' => 'auth', function (\Illuminate\Http\Request $request) {
-    return 'Auth here!';
-}]);
 

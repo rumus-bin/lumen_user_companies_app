@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property string $auth_token
+ * @property User $user
  * @property Carbon $createdAt
  * @property Carbon $updatedAt
  */

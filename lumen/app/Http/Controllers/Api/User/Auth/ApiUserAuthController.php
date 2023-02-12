@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserCreateRequest;
 use App\Http\Requests\Users\UserLoginRequest;
 use App\Http\Resources\Users\UnauthorizedJsonResource;
-use App\Http\Resources\Users\UserJsonResource;
+use App\Http\Resources\Users\UserAuthenticatedJsonResource;
 use App\Models\User\Services\AuthUserService;
 use App\Models\User\User;
 use App\Models\User\UserRestoreToken;
@@ -37,14 +37,14 @@ class ApiUserAuthController extends Controller
             return new UnauthorizedJsonResource(new User());
         }
 
-        return new UserJsonResource($user);
+        return new UserAuthenticatedJsonResource($user);
     }
 
-    public function register(UserCreateRequest $request): UserJsonResource
+    public function register(UserCreateRequest $request): UserAuthenticatedJsonResource
     {
         $user = $this->authUserService->register($request->getDto());
 
-        return new UserJsonResource($user);
+        return new UserAuthenticatedJsonResource($user);
     }
 
     public function askRecoverPassword(Request $request): JsonResponse
@@ -82,7 +82,7 @@ class ApiUserAuthController extends Controller
             ]
         );
 
-        return new UserJsonResource(
+        return new UserAuthenticatedJsonResource(
             $this->authUserService->recoverPasswordProcess($request->get('recover_token'))
         );
     }
